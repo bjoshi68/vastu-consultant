@@ -93,7 +93,7 @@
             
             <div class="form-section">
                 <h3>🔮 Secure Dossier Entry</h3>
-                <form id="intakeForm" onsubmit="processClientData(event)">
+                <form id="intakeForm" onsubmit="return processClientData(event)">
                     <div class="form-group">
                         <label>Full Legal Name</label>
                         <input type="text" id="clientName" placeholder="e.g., Bhautik Danish Josh" required>
@@ -138,3 +138,37 @@
                     <p>Governs daily behavioral style and your core psychological foundation framework.</p>
                 </div>
                 <div class="matrix-box">
+        function processClientData(event) {
+            event.preventDefault();
+            
+            // Extract raw data elements from inputs
+            globalData.name = document.getElementById('clientName').value.trim();
+            globalData.dob = document.getElementById('clientDOB').value;
+            globalData.gender = document.getElementById('clientGender').value;
+            globalData.email = document.getElementById('clientEmail').value.trim();
+            
+            // Parse Date parameters cleanly
+            let dateParts = globalData.dob.split('-'); // YYYY-MM-DD
+            let birthDay = dateParts[2];
+            let rawFullDateStr = dateParts[2] + dateParts[1] + dateParts[0]; // DDMMYYYY
+            
+            // Execute cosmic numerical equations instantly
+            globalData.moolank = reduceToSingleDigit(birthDay);
+            globalData.bhagyank = reduceToSingleDigit(rawFullDateStr);
+            globalData.nameNo = calculateChaldeanValue(globalData.name);
+            
+            // Push values directly to dashboard text panels
+            document.getElementById('display-welcome-name').innerText = "Welcome, " + globalData.name + "!";
+            document.getElementById('calc-moolank').innerText = globalData.moolank;
+            document.getElementById('calc-bhagyank').innerText = globalData.bhagyank;
+            document.getElementById('calc-name').innerText = globalData.nameNo;
+            
+            // Switch presentation layers smoothly
+            document.getElementById('panel-intake').classList.remove('view-active');
+            document.getElementById('panel-dashboard').classList.add('view-active');
+            
+            // Smoothly auto-scroll to dashboard display peak
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            return false; // 🌟 THIS PREVENTS THE PAGE FROM REFRESHING BACK TO THE FORM
+        }
